@@ -12,7 +12,7 @@ export const FormInputs = () => {
     }
   };
   const handleKeyFocus = (e, index) => {
-    if (e.code === "Backspace") {
+    if (e.code === "Backspace" && inputRefs[index].current.value.length === 0) {
       inputRefs[index - 1]?.current.focus();
     }
   };
@@ -28,7 +28,6 @@ export const FormInputs = () => {
           ref={ref}
           onChange={(e) => handleFocus(e, index)}
           onKeyDown={(e) => handleKeyFocus(e, index)}
-          pattern="^[\u0410-\u044F\u0401\u0451]+$"
         />
       ))}
     </form>
