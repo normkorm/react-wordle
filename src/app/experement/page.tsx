@@ -1,19 +1,22 @@
 "use client";
 import React, { useRef } from "react";
 
-const Counter = () => {
-  const counterRef = useRef(0);
+export default function MyComponent() {
+  const nextElementRef = useRef(null);
 
-  const handleIncrement = () => {
-    counterRef.current += 1;
+  const handleClick = () => {
+    // Обращаемся к следующему соседнему элементу с помощью рефа
+    if (nextElementRef.current) {
+      // Выполняем необходимые действия с элементом
+      console.log(nextElementRef.current);
+    }
   };
 
   return (
     <div>
-      <p>Счетчик: {counterRef.current}</p>
-      <button onClick={handleIncrement}>Увеличить</button>
+      <div>Элемент 1</div>
+      <div ref={nextElementRef}>Элемент 2</div>
+      <button onClick={handleClick}>Получить следующий элемент</button>
     </div>
   );
-};
-
-export default Counter;
+}
