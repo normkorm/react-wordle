@@ -9,13 +9,13 @@ export const FormInputs = () => {
       inputRefs[index].current.value = "";
     } else {
       if ((index + 1) % 5 !== 0) {
-        setWord((prevState) => prevState + e.target.value);
         inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
         inputRefs[index + 1]?.current.focus();
         inputRefs[index].current.setAttribute("disabled", "disabled");
       }
       inputRefs[index].current.value =
         inputRefs[index].current.value.toUpperCase();
+      setWord((prevState) => prevState + e.target.value);
     }
   };
   const handleKeyFocus = (e, index) => {
@@ -53,6 +53,7 @@ export const FormInputs = () => {
           onKeyDown={(e) => handleKeyFocus(e, index)}
         />
       ))}
+      <div>{word}</div>
     </form>
   );
 };
