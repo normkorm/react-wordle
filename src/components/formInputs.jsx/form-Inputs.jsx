@@ -19,13 +19,21 @@ export const FormInputs = () => {
     }
   };
   const handleKeyFocus = (e, index) => {
-    if (e.code === "Backspace" && inputRefs[index].current.value.length === 0) {
+    if (
+      e.code === "Backspace" &&
+      inputRefs[index].current.value.length === 0 &&
+      index % 5 !== 0
+    ) {
       if (index !== 0)
         inputRefs[index].current.setAttribute("disabled", "disabled");
       inputRefs[index - 1]?.current.removeAttribute("disabled", "disabled");
       inputRefs[index - 1]?.current.focus();
     }
-    if (e.code === "Enter" && (index + 1) % 5 === 0) {
+    if (
+      e.code === "Enter" &&
+      (index + 1) % 5 === 0 &&
+      inputRefs[index].current.value.length > 0
+    ) {
       inputRefs[index]?.current.setAttribute("disabled", "disabled");
       inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
       inputRefs[index + 1]?.current.focus();
