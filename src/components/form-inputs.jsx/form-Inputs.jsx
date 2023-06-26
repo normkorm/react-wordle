@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { allWords } from "@/all-words/all-words";
 
 export const FormInputs = () => {
   const [word, setWord] = useState("");
@@ -18,7 +19,11 @@ export const FormInputs = () => {
       setWord((prevState) => prevState + e.target.value);
     }
   };
+  const molot = "молот";
   const handleKeyFocus = (e, index) => {
+    if (e.code === "Backspace") {
+      setWord((prevState) => prevState.slice(0, word.length - 1));
+    }
     if (
       e.code === "Backspace" &&
       inputRefs[index].current.value.length === 0 &&
@@ -34,11 +39,22 @@ export const FormInputs = () => {
       (index + 1) % 5 === 0 &&
       inputRefs[index].current.value.length > 0
     ) {
-      inputRefs[index]?.current.setAttribute("disabled", "disabled");
-      inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
-      inputRefs[index + 1]?.current.focus();
+      allWords.map((element) => {
+        if (element === word.toLowerCase()) {
+          inputRefs[index]?.current.setAttribute("disabled", "disabled");
+          inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
+          inputRefs[index + 1]?.current.focus();
+          [...word].map((letter, index) => {
+            if (letter.toLowerCase() === molot[index]) {
+              console.log(`совпадает буква ${word[index]}`);
+            }
+          });
+          setWord((prevState) => (prevState = ""));
+        }
+      });
     }
   };
+
   return (
     <form className="grid grid-cols-5 gap-2">
       {inputRefs.map((ref, index) => (

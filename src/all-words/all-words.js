@@ -1,4 +1,4 @@
-export const words = [
+export const allWords = [
   "абаец",
   "абака",
   "абаси",
@@ -5743,5 +5743,5 @@ export const words = [
   "яшмак",
 ];
 
-export const getRandomWord = () =>
-  words[Math.floor(Math.random() * words.length)];
+export const getRandomWord =
+  allWords[Math.floor(Math.random() * allWords.length)];

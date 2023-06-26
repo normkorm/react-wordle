@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import FormInputs from "@/components/formInputs.jsx/form-Inputs";
+import FormInputs from "@/components/form-inputs.jsx/form-Inputs";
 
 export default function Home() {
   return (
