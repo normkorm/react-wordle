@@ -44,23 +44,25 @@ export const FormInputs = () => {
           inputRefs[index]?.current.setAttribute("disabled", "disabled");
           inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
           inputRefs[index + 1]?.current.focus();
-          [...word].map((letter, index) => {
-            if (letter.toLowerCase() === molot[index]) {
-              console.log(`совпадает буква ${word[index]}`);
-            }
-          });
           setWord((prevState) => (prevState = ""));
+          checkLetters(word);
         }
       });
     }
   };
+
+  function checkLetters(result) {
+    [...result].filter(
+      (oneLetter, index) => oneLetter.toLowerCase() === molot[index]
+    );
+  }
 
   return (
     <form className="grid grid-cols-5 gap-2">
       {inputRefs.map((ref, index) => (
         <input
           key={index}
-          className="border-2 text-center w-14 h-14 focus:outline-none font-black"
+          className={`border-2 text-center w-14 h-14 focus:outline-none font-black`}
           disabled={index !== 0}
           autoFocus={index === 0}
           maxLength={1}
@@ -69,7 +71,6 @@ export const FormInputs = () => {
           onKeyDown={(e) => handleKeyFocus(e, index)}
         />
       ))}
-      <div>{word}</div>
     </form>
   );
 };

@@ -1,22 +1,11 @@
 "use client";
-import React, { useRef } from "react";
+import clsx from "clsx";
 
-export default function MyComponent() {
-  const nextElementRef = useRef(null);
+export default function MyComponent({ isActive }) {
+  const buttonClasses = clsx("bg-blue-500", "text-white", {
+    active: isActive,
+    rounded: !isActive,
+  });
 
-  const handleClick = () => {
-    // Обращаемся к следующему соседнему элементу с помощью рефа
-    if (nextElementRef.current) {
-      // Выполняем необходимые действия с элементом
-      console.log(nextElementRef.current);
-    }
-  };
-
-  return (
-    <div>
-      <div>Элемент 1</div>
-      <div ref={nextElementRef}>Элемент 2</div>
-      <button onClick={handleClick}>Получить следующий элемент</button>
-    </div>
-  );
+  return <button className={buttonClasses}>Click me</button>;
 }
