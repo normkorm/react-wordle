@@ -45,17 +45,19 @@ export const FormInputs = () => {
           inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
           inputRefs[index + 1]?.current.focus();
           setWord((prevState) => (prevState = ""));
-          checkLetters(word);
+          checkLetters(word, index);
         }
       });
     }
   };
   const molot = "молот";
 
-  function checkLetters(result) {
-    [...result].filter((oneLetter, index) => {
-      if (oneLetter.toLowerCase() === molot[index])
-        inputRefs[index].current.classList.add("bg-teal-600");
+  function checkLetters(result, ind) {
+    [...result].filter((oneLetter, i) => {
+      if (oneLetter.toLowerCase() === molot[i]) {
+        inputRefs[ind - (4 - i)].current.classList.add("bg-teal-600");
+        console.log(ind, i);
+      }
     });
   }
 
