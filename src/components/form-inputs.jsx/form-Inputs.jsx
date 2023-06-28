@@ -19,7 +19,7 @@ export const FormInputs = () => {
       setWord((prevState) => prevState + e.target.value);
     }
   };
-  const molot = "молот";
+
   const handleKeyFocus = (e, index) => {
     if (e.code === "Backspace") {
       setWord((prevState) => prevState.slice(0, word.length - 1));
@@ -50,6 +50,7 @@ export const FormInputs = () => {
       });
     }
   };
+  const molot = "молот";
 
   function checkLetters(result) {
     [...result].filter(
@@ -62,7 +63,7 @@ export const FormInputs = () => {
       {inputRefs.map((ref, index) => (
         <input
           key={index}
-          className={`border-2 text-center w-14 h-14 focus:outline-none font-black`}
+          className="border-2 text-center w-14 h-14 focus:outline-none text-2xl"
           disabled={index !== 0}
           autoFocus={index === 0}
           maxLength={1}
