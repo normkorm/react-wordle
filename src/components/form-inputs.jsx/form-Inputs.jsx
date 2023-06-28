@@ -53,9 +53,10 @@ export const FormInputs = () => {
   const molot = "молот";
 
   function checkLetters(result) {
-    [...result].filter(
-      (oneLetter, index) => oneLetter.toLowerCase() === molot[index]
-    );
+    [...result].filter((oneLetter, index) => {
+      if (oneLetter.toLowerCase() === molot[index])
+        inputRefs[index].current.classList.add("bg-teal-600");
+    });
   }
 
   return (
@@ -63,7 +64,7 @@ export const FormInputs = () => {
       {inputRefs.map((ref, index) => (
         <input
           key={index}
-          className="border-2 text-center w-14 h-14 focus:outline-none text-2xl"
+          className="border-2 text-center w-14 h-14 focus:outline-none text-2xl font-bold"
           disabled={index !== 0}
           autoFocus={index === 0}
           maxLength={1}
