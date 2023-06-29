@@ -52,11 +52,32 @@ export const FormInputs = () => {
   };
   const molot = "молот";
 
+  // function checkLetter(result, ind) {
+  //   let newResult = [];
+  //   for (let indexLetter in [...result]) {
+  //     if ([...result][indexLetter].toLowerCase() === molot[indexLetter]) {
+  //       newResult.push([...result][indexLetter]);
+  //       inputRefs[ind - (4 - indexLetter)].current.classList.add("bg-teal-600");
+  //     } else if (molot.includes([...result][indexLetter].toLowerCase())) {
+  //       inputRefs[ind - (4 - indexLetter)].current.classList.add("bg-teal-400");
+  //     }
+  //   }
+  // }
+
   function checkLetters(result, ind) {
+    const mismatchedLetters = [];
     [...result].filter((oneLetter, i) => {
       if (oneLetter.toLowerCase() === molot[i]) {
         inputRefs[ind - (4 - i)].current.classList.add("bg-teal-600");
-        console.log(ind, i);
+        mismatchedLetters.push(null);
+      } else {
+        mismatchedLetters.push(oneLetter.toLowerCase());
+      }
+      console.log(mismatchedLetters);
+    });
+    mismatchedLetters.filter((oneLetter, i) => {
+      if (molot.includes(oneLetter)) {
+        inputRefs[ind - (4 - i)].current.classList.add("bg-teal-400");
       }
     });
   }
