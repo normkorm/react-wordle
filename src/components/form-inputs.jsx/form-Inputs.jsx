@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { allWords } from "@/all-words/all-words";
+import { allWords, getRandomWord } from "@/all-words/all-words";
 
 export const FormInputs = () => {
   const [word, setWord] = useState("");
@@ -39,18 +39,18 @@ export const FormInputs = () => {
       (index + 1) % 5 === 0 &&
       inputRefs[index].current.value.length > 0
     ) {
-      allWords.map((element) => {
-        if (element === word.toLowerCase()) {
-          inputRefs[index]?.current.setAttribute("disabled", "disabled");
-          inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
-          inputRefs[index + 1]?.current.focus();
-          setWord((prevState) => (prevState = ""));
-          checkLetters(word, index);
-        }
-      });
+      if (allWords.includes(word.toLowerCase())) {
+        inputRefs[index]?.current.setAttribute("disabled", "disabled");
+        inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
+        inputRefs[index + 1]?.current.focus();
+        setWord("");
+        checkLetters(word, index);
+      }
     }
   };
-  const molot = "молот";
+  console.log(getRandomWord);
+
+  // const molot = "молот";
 
   // function checkLetter(result, ind) {
   //   let newResult = [];
@@ -65,21 +65,41 @@ export const FormInputs = () => {
   // }
 
   function checkLetters(result, ind) {
-    const mismatchedLetters = [];
-    [...result].filter((oneLetter, i) => {
-      if (oneLetter.toLowerCase() === molot[i]) {
-        inputRefs[ind - (4 - i)].current.classList.add("bg-teal-600");
-        mismatchedLetters.push(null);
+    const copyOfResult = [...result];
+    const copyOfGetRandom = [...getRandomWord];
+    copyOfResult.filter((oneLetter, i) => {
+      if (oneLetter.toLowerCase() === copyOfGetRandom[i]) {
+        inputRefs[ind - (4 - i)].current.classList.add("bg-green-600");
+        copyOfResult[i] = null;
+        copyOfGetRandom[i] = null;
       } else {
-        mismatchedLetters.push(oneLetter.toLowerCase());
-      }
-      console.log(mismatchedLetters);
-    });
-    mismatchedLetters.filter((oneLetter, i) => {
-      if (molot.includes(oneLetter)) {
-        inputRefs[ind - (4 - i)].current.classList.add("bg-teal-400");
+        copyOfResult[i] = oneLetter.toLowerCase();
       }
     });
+    for (let indexCopyOfResult in copyOfResult) {
+      if (
+        copyOfResult[indexCopyOfResult] !== null &&
+        copyOfGetRandom.includes(copyOfResult[indexCopyOfResult])
+      ) {
+        copyOfGetRandom[
+          copyOfGetRandom.indexOf(copyOfResult[indexCopyOfResult])
+        ] = null;
+        inputRefs[ind - (4 - indexCopyOfResult)].current.classList.add(
+          "bg-yellow-400"
+        );
+      } else {
+        inputRefs[ind - (4 - indexCopyOfResult)].current.classList.add(
+          "bg-slate-200"
+        );
+      }
+    }
+    // copyOfResult.filter((oneLetter, i) => {
+    //   if (copyOfGetRandom.includes(oneLetter)) {
+    //     inputRefs[ind - (4 - i)].current.classList.add("bg-yellow-400");
+    //   } else {
+    //     inputRefs[ind - (4 - i)].current.classList.add("bg-slate-200");
+    //   }
+    // });
   }
 
   return (
