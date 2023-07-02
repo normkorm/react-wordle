@@ -19,7 +19,6 @@ export const FormInputs = () => {
       setWord((prevState) => prevState + e.target.value);
     }
   };
-
   const handleKeyFocus = (e, index) => {
     if (e.code === "Backspace") {
       setWord((prevState) => prevState.slice(0, word.length - 1));
@@ -50,20 +49,6 @@ export const FormInputs = () => {
   };
   console.log(getRandomWord);
 
-  // const molot = "молот";
-
-  // function checkLetter(result, ind) {
-  //   let newResult = [];
-  //   for (let indexLetter in [...result]) {
-  //     if ([...result][indexLetter].toLowerCase() === molot[indexLetter]) {
-  //       newResult.push([...result][indexLetter]);
-  //       inputRefs[ind - (4 - indexLetter)].current.classList.add("bg-teal-600");
-  //     } else if (molot.includes([...result][indexLetter].toLowerCase())) {
-  //       inputRefs[ind - (4 - indexLetter)].current.classList.add("bg-teal-400");
-  //     }
-  //   }
-  // }
-
   function checkLetters(result, ind) {
     const copyOfResult = [...result];
     const copyOfGetRandom = [...getRandomWord];
@@ -77,46 +62,61 @@ export const FormInputs = () => {
       }
     });
     for (let indexCopyOfResult in copyOfResult) {
-      if (
-        copyOfResult[indexCopyOfResult] !== null &&
-        copyOfGetRandom.includes(copyOfResult[indexCopyOfResult])
-      ) {
-        copyOfGetRandom[
-          copyOfGetRandom.indexOf(copyOfResult[indexCopyOfResult])
-        ] = null;
-        inputRefs[ind - (4 - indexCopyOfResult)].current.classList.add(
-          "bg-yellow-400"
-        );
-      } else {
-        inputRefs[ind - (4 - indexCopyOfResult)].current.classList.add(
-          "bg-slate-200"
-        );
+      if (copyOfResult[indexCopyOfResult] !== null) {
+        if (copyOfGetRandom.includes(copyOfResult[indexCopyOfResult])) {
+          copyOfGetRandom[
+            copyOfGetRandom.indexOf(copyOfResult[indexCopyOfResult])
+          ] = null;
+          inputRefs[ind - (4 - indexCopyOfResult)].current.classList.add(
+            "bg-yellow-400"
+          );
+        } else {
+          inputRefs[ind - (4 - indexCopyOfResult)].current.classList.add(
+            "bg-slate-200"
+          );
+        }
       }
     }
-    // copyOfResult.filter((oneLetter, i) => {
-    //   if (copyOfGetRandom.includes(oneLetter)) {
-    //     inputRefs[ind - (4 - i)].current.classList.add("bg-yellow-400");
-    //   } else {
-    //     inputRefs[ind - (4 - i)].current.classList.add("bg-slate-200");
-    //   }
-    // });
   }
 
+  const upperKeyBoard = ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з"];
+  const handleButtonClick = (e, ind) => {
+    if (inputRefs.current.disabled === false) {
+      inputRefs[0].current.value = upperKeyBoard[ind];
+    }
+    inputRefs[1]?.current.removeAttribute("disabled", "disabled");
+    inputRefs[+1]?.current.focus();
+    inputRefs[0].current.setAttribute("disabled", "disabled");
+  };
+
   return (
-    <form className="grid grid-cols-5 gap-2">
-      {inputRefs.map((ref, index) => (
-        <input
-          key={index}
-          className="border-2 text-center w-14 h-14 focus:outline-none text-2xl font-bold"
-          disabled={index !== 0}
-          autoFocus={index === 0}
-          maxLength={1}
-          ref={ref}
-          onChange={(e) => handleFocus(e, index)}
-          onKeyDown={(e) => handleKeyFocus(e, index)}
-        />
-      ))}
-    </form>
+    <div>
+      <div className="grid grid-cols-5 gap-2 mx-auto">
+        {inputRefs.map((input, index) => (
+          <input
+            key={index}
+            className="border-2 text-center w-12 h-12 focus:outline-none text-2xl font-bold sm:w-16 sm:h-16"
+            disabled={index !== 0}
+            autoFocus={index === 0}
+            maxLength={1}
+            ref={input}
+            onChange={(e) => handleFocus(e, index)}
+            onKeyDown={(e) => handleKeyFocus(e, index)}
+          />
+        ))}
+      </div>
+      <div className="flex justify-between">
+        {upperKeyBoard.map((symbol, index) => (
+          <button
+            onClick={(e) => handleButtonClick(e, index)}
+            value={symbol}
+            key={index}
+          >
+            {symbol}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 };
 
