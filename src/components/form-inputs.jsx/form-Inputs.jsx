@@ -80,13 +80,9 @@ export const FormInputs = () => {
   }
 
   const upperKeyBoard = ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з"];
-  const handleButtonClick = (e, ind) => {
-    if (inputRefs.current.disabled === false) {
-      inputRefs[0].current.value = upperKeyBoard[ind];
-    }
-    inputRefs[1]?.current.removeAttribute("disabled", "disabled");
-    inputRefs[+1]?.current.focus();
-    inputRefs[0].current.setAttribute("disabled", "disabled");
+  const simulateKeyPress = (e, ind) => {
+    const enterKeyEvent = new Event("change");
+    inputRefs[0].current.dispatchEvent(e.currentTarget.value);
   };
 
   return (
@@ -102,15 +98,16 @@ export const FormInputs = () => {
             ref={input}
             onChange={(e) => handleFocus(e, index)}
             onKeyDown={(e) => handleKeyFocus(e, index)}
+            onBlur={(e) => cons}
           />
         ))}
       </div>
       <div className="flex justify-between">
         {upperKeyBoard.map((symbol, index) => (
           <button
-            onClick={(e) => handleButtonClick(e, index)}
-            value={symbol}
             key={index}
+            onClick={(e) => simulateKeyPress(e, index)}
+            value={symbol}
           >
             {symbol}
           </button>
