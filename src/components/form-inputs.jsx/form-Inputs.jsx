@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { allWords, getRandomWord } from "@/all-words/all-words";
 
 export const FormInputs = () => {
@@ -47,7 +47,6 @@ export const FormInputs = () => {
       }
     }
   };
-  console.log(getRandomWord);
 
   function checkLetters(result, ind) {
     const copyOfResult = [...result];
@@ -79,11 +78,15 @@ export const FormInputs = () => {
     }
   }
 
+  useEffect(() => {
+    console.log(getRandomWord);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", (e) => e.preventDefault());
+  }, []);
+
   const upperKeyBoard = ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з"];
-  const simulateKeyPress = (e, ind) => {
-    const enterKeyEvent = new Event("change");
-    inputRefs[0].current.dispatchEvent(e.currentTarget.value);
-  };
 
   return (
     <div>
@@ -98,17 +101,13 @@ export const FormInputs = () => {
             ref={input}
             onChange={(e) => handleFocus(e, index)}
             onKeyDown={(e) => handleKeyFocus(e, index)}
-            onBlur={(e) => cons}
+            onBlur={(e) => e.preventDefault()}
           />
         ))}
       </div>
       <div className="flex justify-between">
         {upperKeyBoard.map((symbol, index) => (
-          <button
-            key={index}
-            onClick={(e) => simulateKeyPress(e, index)}
-            value={symbol}
-          >
+          <button key={index} value={symbol}>
             {symbol}
           </button>
         ))}
