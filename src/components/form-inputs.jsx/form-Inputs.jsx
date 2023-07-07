@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { allWords, getRandomWord } from "@/all-words/all-words";
 
+const words = [];
+
 export const FormInputs = () => {
-  const [word, setWord] = useState("");
+  const [letter, setLetter] = useState("");
   const inputRefs = Array.from({ length: 25 }, () => useRef(null));
   const handleFocus = (e, index) => {
     const regex = /^[А-яЁё]+$/;
@@ -16,12 +18,12 @@ export const FormInputs = () => {
       }
       inputRefs[index].current.value =
         inputRefs[index].current.value.toUpperCase();
-      setWord((prevState) => prevState + e.target.value);
+      setLetter((prevState) => prevState + e.target.value);
     }
   };
   const handleKeyFocus = (e, index) => {
     if (e.code === "Backspace") {
-      setWord((prevState) => prevState.slice(0, word.length - 1));
+      setLetter((prevState) => prevState.slice(0, letter.length - 1));
     }
     if (
       e.code === "Backspace" &&
@@ -38,12 +40,13 @@ export const FormInputs = () => {
       (index + 1) % 5 === 0 &&
       inputRefs[index].current.value.length > 0
     ) {
-      if (allWords.includes(word.toLowerCase())) {
+      if (allWords.includes(letter.toLowerCase())) {
         inputRefs[index]?.current.setAttribute("disabled", "disabled");
         inputRefs[index + 1]?.current.removeAttribute("disabled", "disabled");
         inputRefs[index + 1]?.current.focus();
-        setWord("");
-        checkLetters(word, index);
+        words.push(letter);
+        setLetter("");
+        checkLetters(letter, index);
       }
     }
   };
@@ -86,8 +89,15 @@ export const FormInputs = () => {
     document.addEventListener("mousedown", (e) => e.preventDefault());
   }, []);
 
-  const upperKeyBoard = ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з"];
+  function handleClick(e, index) {
+    inputRefs[letter.length].current.value = upperKeyBoard[index];
+    handleFocus(
+      { target: inputRefs[letter.length].current },
+      words.length * 5 + letter.length
+    );
+  }
 
+  const upperKeyBoard = ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з"];
   return (
     <div>
       <div className="grid grid-cols-5 gap-2 mx-auto">
@@ -101,13 +111,16 @@ export const FormInputs = () => {
             ref={input}
             onChange={(e) => handleFocus(e, index)}
             onKeyDown={(e) => handleKeyFocus(e, index)}
-            onBlur={(e) => e.preventDefault()}
           />
         ))}
       </div>
       <div className="flex justify-between">
         {upperKeyBoard.map((symbol, index) => (
-          <button key={index} value={symbol}>
+          <button
+            key={index}
+            value={symbol}
+            onClick={(e) => handleClick(e, index)}
+          >
             {symbol}
           </button>
         ))}
